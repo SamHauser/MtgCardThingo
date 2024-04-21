@@ -1,5 +1,5 @@
 import './App.css';
-import * as React from 'react';
+import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,16 +7,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button,  TextField } from '@mui/material';
+import { Box, Button,  TextField } from '@mui/material';
 import {  CSVLink } from 'react-csv';
 
 var scryfall = require("scryfall-client")
 
-
-
-
 function App() {
-  const [rows,setRows] = React.useState([{name: "test", id: "test", code: "test", num:"test"}])
+  const [rows,setRows] = React.useState([{name: "PLEASE DELETE THIS IM TOO LAZY", id: "test", code: "test", num:"test"}])
   
   const updateTable = (event)=>  {  
 
@@ -27,6 +24,9 @@ function App() {
       setRows(prev => [...prev, {name: list.name, id: list.id, code: list.set, num: list.collector_number}])
     })
     
+  }
+  const handleDelete = (id) => {
+    setRows(l => l.filter(item => item.id !== id))
   }
   const BasicTable = () => {
   
@@ -39,6 +39,7 @@ function App() {
               <TableCell align="right">Set code</TableCell>
               <TableCell align="right">Collect Num</TableCell>
               <TableCell align="right">Scryfall ID</TableCell>
+              <TableCell align="right">Delete </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -53,6 +54,11 @@ function App() {
                 <TableCell align="right">{row.code}</TableCell>
                 <TableCell align="right">{row.num}</TableCell>
                 <TableCell align="right">{row.id}</TableCell>
+                <TableCell align="right">
+                  <div > 
+                    <Button onClick={() => handleDelete(row.id)}> Delete</Button>
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -63,18 +69,22 @@ function App() {
   return (
     <div>
       <header >
+    
+      
         <form onSubmit={updateTable}>
+        <Box display={'flex'} alignItems={'center'} justifyContent={'center'} p={2} width={"100%"}>
         <TextField id="code" label="code" variant="outlined" />
         <TextField id="number" label="number" variant="outlined" />
         
         <Button type="submit" variant="contained">add</Button>
-        
+        </Box>
         </form>
         <BasicTable />
         <CSVLink data={rows} target="_blank" >
           Please download me
         </CSVLink>
-
+     
+       
       </header>
     </div>
   );
