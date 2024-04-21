@@ -14,9 +14,9 @@ var scryfall = require("scryfall-client")
 
 function App() {
   const [rows,setRows] = React.useState([{name: "PLEASE DELETE THIS IM TOO LAZY", id: "test", code: "test", num:"test"}])
-  
+  const [number, setNumber] = React.useState("")
   const updateTable = (event)=>  {  
-
+    setNumber("")
     event.preventDefault();
     scryfall.getCardBySetCodeAndCollectorNumber(event.target[0].value, event.target[2].value)
     .then(function (list) {
@@ -27,6 +27,7 @@ function App() {
   }
   const handleDelete = (id) => {
     setRows(l => l.filter(item => item.id !== id))
+   
   }
   const BasicTable = () => {
   
@@ -66,23 +67,29 @@ function App() {
       </TableContainer>
     );
   }
+  function changeTxt(event){
+    setNumber(event.target.value);                
+}  
   return (
     <div>
       <header >
     
       
         <form onSubmit={updateTable}>
+
         <Box display={'flex'} alignItems={'center'} justifyContent={'center'} p={2} width={"100%"}>
         <TextField id="code" label="code" variant="outlined" />
-        <TextField id="number" label="number" variant="outlined" />
+        <TextField id="number" label="number" variant="outlined" onChange={changeTxt} value={number}/>
         
         <Button type="submit" variant="contained">add</Button>
+
         </Box>
-        </form>
-        <BasicTable />
         <CSVLink data={rows} target="_blank" >
           Please download me
         </CSVLink>
+        </form>
+        <BasicTable />
+    
      
        
       </header>
