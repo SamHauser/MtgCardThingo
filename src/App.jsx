@@ -21,7 +21,7 @@ function App() {
     scryfall.getCardBySetCodeAndCollectorNumber(event.target[0].value, event.target[2].value)
     .then(function (list) {
       console.log(list)
-      setRows(prev => [...prev, {name: list.name, id: list.id, code: list.set, num: list.collector_number}])
+      setRows(prev => [ {name: list.name, id: list.id, code: list.set, num: list.collector_number}, ...prev])
     })
     
   }
